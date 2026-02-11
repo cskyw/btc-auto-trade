@@ -17,6 +17,10 @@ API_KEY = os.getenv("OKX_API_KEY")
 SECRET = os.getenv("OKX_SECRET")
 PASSWORD = os.getenv("OKX_PASSPHRASE")
 
+# API_KEY = "a68e6fb1-d204-4a4b-b7c7-9087ebe8971d"
+# SECRET = "239539AD4E99ACEAEC062E65369B58BA"
+# PASSWORD = "Geyi761212."
+
 SYMBOL = "BTC/USDT"
 TIMEFRAME = "1d"
 STATE_PATH = os.path.join(os.path.dirname(__file__), "state.json")
@@ -42,6 +46,10 @@ def create_exchange() -> ccxt.Exchange:
             "secret": SECRET,
             "password": PASSWORD,
             "enableRateLimit": True,
+    #          "proxies": {
+    #     "http": "http://127.0.0.1:7897",
+    #     "https": "http://127.0.0.1:7897",
+    # }
         }
     )
     ex.set_sandbox_mode(True)

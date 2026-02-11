@@ -1,0 +1,1 @@
+{"params": {"ma_fast": 5, "ma_slow": 10, "buy_pct": 0.05, "tp1_pct": 0.05, "tp2_pct": 0.08, "sl_pct": 0.18, "tp1_sell_prop": 0.9}, "long_entries": [], "short_entries": [], "completed_long_trades": 0, "completed_short_trades": 0}
