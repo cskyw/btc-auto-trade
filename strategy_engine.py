@@ -17,11 +17,11 @@ def should_stop_loss(entry_price: float, current_price: float, side: str, sl_pct
 
 @dataclass
 class StrategyParams:
-    ma_fast: int = 5
-    ma_slow: int = 10
-    buy_pct: float = 0.05
-    tp1_pct: float = 0.05
-    tp2_pct: float = 0.08
+    ma_fast: int = 10
+    ma_slow: int = 20
+    buy_pct: float = 0.1
+    tp1_pct: float = 0.08
+    tp2_pct: float = 0.16
     sl_pct: float = 0.18
     tp1_sell_prop: float = 0.9
 
@@ -73,20 +73,21 @@ class StrategyState:
         if "close" not in df.columns:
             return []
         close = df["close"]
-        if len(close) < 130:
+        max_period = max(self.params.ma_fast, self.params.ma_slow, 120)
+        if len(close) < max_period + 1:
             return []
 
-        ma10 = close.rolling(10).mean()
-        ma20 = close.rolling(20).mean()
+        ma_fast = close.rolling(self.params.ma_fast).mean()
+        ma_slow = close.rolling(self.params.ma_slow).mean()
         ma120 = close.rolling(120).mean()
 
         idx = len(close) - 1
         price = float(close.iloc[idx])
         prev_price = float(close.iloc[idx - 1])
-        last_ma10 = float(ma10.iloc[idx])
-        prev_ma10 = float(ma10.iloc[idx - 1])
-        last_ma20 = float(ma20.iloc[idx])
-        prev_ma20 = float(ma20.iloc[idx - 1])
+        last_ma_fast = float(ma_fast.iloc[idx])
+        prev_ma_fast = float(ma_fast.iloc[idx - 1])
+        last_ma_slow = float(ma_slow.iloc[idx])
+        prev_ma_slow = float(ma_slow.iloc[idx - 1])
         last_ma120 = float(ma120.iloc[idx])
 
         if price <= 0:
@@ -95,14 +96,14 @@ class StrategyState:
         actions: List[Dict[str, Any]] = []
 
         long_signal = (
-            prev_price < prev_ma10
-            and price > last_ma10
-            and prev_price < prev_ma20
-            and price > last_ma20
+            prev_price < prev_ma_fast
+            and price > last_ma_fast
+            and prev_price < prev_ma_slow
+            and price > last_ma_slow
             and price > last_ma120
         )
 
-        if long_signal:
+        if long_signal and not self.long_entries:
             buy_amount = account_value * self.params.buy_pct
             if cash >= buy_amount:
                 size = buy_amount / price
@@ -119,14 +120,14 @@ class StrategyState:
                 return actions
 
         short_signal = (
-            prev_price > prev_ma10
-            and price < last_ma10
-            and prev_price > prev_ma20
-            and price < last_ma20
+            prev_price > prev_ma_fast
+            and price < last_ma_fast
+            and prev_price > prev_ma_slow
+            and price < last_ma_slow
             and price < last_ma120
         )
 
-        if short_signal:
+        if short_signal and not self.short_entries:
             sell_amount = account_value * self.params.buy_pct
             size = sell_amount / price
             self.short_entries.append(Entry(price=price, size=size, tp1_done=False))
@@ -232,4 +233,3 @@ class StrategyState:
                 return actions
 
         return actions
-
