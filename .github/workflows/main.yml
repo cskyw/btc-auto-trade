@@ -2,7 +2,7 @@ name: OKX Daily Strategy
 
 on:
   schedule:
-    - cron: '10 8 * * *'   # 北京时间 16:10 运行
+    - cron: '0 0 * * *'   # 北京时间 8:00 运行
   workflow_dispatch:       # 允许手动触发
 
 jobs:
