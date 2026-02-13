@@ -103,7 +103,7 @@ class StrategyState:
             and price > last_ma120
         )
 
-        if long_signal and not self.long_entries:
+        if long_signal:
             buy_amount = account_value * self.params.buy_pct
             if cash >= buy_amount:
                 size = buy_amount / price
@@ -127,7 +127,7 @@ class StrategyState:
             and price < last_ma120
         )
 
-        if short_signal and not self.short_entries:
+        if short_signal:
             sell_amount = account_value * self.params.buy_pct
             size = sell_amount / price
             self.short_entries.append(Entry(price=price, size=size, tp1_done=False))
