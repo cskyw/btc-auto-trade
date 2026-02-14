@@ -1,4 +1,4 @@
-name: OKX Daily Strategy
+name: BTC Daily Strategy
 
 on:
   schedule:
