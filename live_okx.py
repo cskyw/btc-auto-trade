@@ -39,8 +39,8 @@ PROXY_URL = None
 
 def create_strategy_state() -> StrategyState:
     params = StrategyParams(
-        ma_fast=int(os.getenv("MA_FAST", "2")),
-        ma_slow=int(os.getenv("MA_SLOW", "3")),
+        ma_fast=int(os.getenv("MA_FAST", "3")),
+        ma_slow=int(os.getenv("MA_SLOW", "5")),
         buy_pct=float(os.getenv("BUY_PCT", "0.15")),
         tp1_pct=float(os.getenv("TP1_PCT", "0.08")),
         tp2_pct=float(os.getenv("TP2_PCT", "0.14")),
