@@ -101,7 +101,7 @@ class StrategyState:
             and prev_price < prev_ma_slow
             and price > last_ma_slow
             and price > last_ma120
-            or len(self.long_entries)==0
+           or len(self.long_entries)==0
         )
 
         if long_signal:
