@@ -223,7 +223,7 @@ def execute_actions(exchange: ccxt.Exchange, actions: list[dict]) -> list[dict]:
             params["posSide"] = pos_side
         if op.startswith("tp1_") or op.startswith("tp2_") or op.startswith("sl_"):
             params["reduceOnly"] = True
-        params["clOrdId"] = f"btc_{op[:10]}_{int(time.time())}"
+        
         contracts = btc_size / contract_size
         if contracts <= 0:
             continue
