@@ -100,7 +100,7 @@ class StrategyState:
             and price > last_ma_fast
             and prev_price < prev_ma_slow
             and price > last_ma_slow
-            and price < last_ma120
+            and price > last_ma120
         )
 
         if long_signal:
